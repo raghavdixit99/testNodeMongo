@@ -1,32 +1,18 @@
-const Joi = require('joi') // Joi is a class
-const express = require('express')
-const bodyParser = require('body-parser')
-
-const test = require('./routes/testroute');
-
-const app = express();
-app.use('/test',test);
-
-app.get('/', (req, res) => {
-	res.send("<h1>Hello Bitch! </h1>");
+var MongoClient = require('mongodb').MongoClient;
+var assert = require('assert');
+var ObjectId = require('mongodb').ObjectID;
+var url = 'mongodb://cfd-account:lTaqvuxCfztEPLrfIfW69MRm2o74qEFeGtH4j19Byn90z7jgGTUZCueKJynPTXuArHnuqdd1ivc2bWUEcEGiGQ==@cfd-account.documents.azure.com:10255/?ssl=true&replicaSet=globaldb';
+var express = require('express');
+app = express();
+const port = process.env.PORT || 5000;
+app.listen(port,function(){
+    console.log('listening on 5000');
+})
+app.get('/',(req,res)=>{
+    res.send('yo');
 })
 
-app.post('/api/courses', (req, res) => {
-	const schema = {
-		name: Joi.string().min(3).required()
-	};
-
-	const result = Joi.validate(req.body, schema)
-	console.log(result)
-	if(result.error) {
-		res.status(400).send("Bad request"+result.error.details[0].name);
-		return; 
-	}
+MongoClient.connect(url,{ useNewUrlParser: true },function(err, db) {
+assert.equal(err,null);
+console.log('connected')
 });
-
-const port = process.env.PORT || 3000; // Reads environment var PORT or uses 3000
-app.listen(port, () => {console.log(`Listening on port ${port}...`)})
-
-app.get('/api/courses/:id', (req, res) => {
-	res.send(`Port : ${port} <br/> id : ${res.params.id}`)
-})
