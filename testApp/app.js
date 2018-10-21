@@ -9,10 +9,10 @@ app.listen(port,function(){
     console.log('listening on 5000');
 })
 app.get('/',(req,res)=>{
-    res.send('yo');
+    res.send('Hello !!');
 })
 
 MongoClient.connect(url,{ useNewUrlParser: true },function(err, db) {
 assert.equal(err,null);
-console.log('connected')
+console.log('connected to mongodb');
 });
